@@ -1,6 +1,6 @@
 module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: 'media', // or 'media' or 'class'
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -10,13 +10,33 @@ module.exports = {
         'gotham-bold': ['Gotham-Bold']
       },
       colors: {
-        primary: '#6900FF',
-        secondary: '#FFD700',
-        light: '#FAF7FF',
-        dark: '#41236D',
-        info: '#14D4FF',
-        warn: '#FFAA17',
-        error: '#D63E13'
+        primary: {
+          light: '#9752FF',
+          DEFAULT: '#6900FF',
+          dark: '#310275'
+        },
+        secondary: {
+          light: '#FDD463',
+          DEFAULT: '#F1B50F',
+          dark: '#C38E02'
+        },
+        light: '#F5F3F9',
+        dark: '#2D2D2F',
+        info: {
+          light: '#6FE4FF',
+          DEFAULT: '#14D4FF',
+          dark: '#039FC3'
+        },
+        warn: {
+          light: '#F98F5C',
+          DEFAULT: '#EA5A17',
+          dark: '#A63E0E'
+        },
+        error: {
+          light: '#EA493B',
+          DEFAULT: '#DC2618',
+          dark: '#9E1005'
+        }
       },
       borderWidth: {
         '1': '1px'
