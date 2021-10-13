@@ -66,7 +66,7 @@ export const Button: FC<ButtonProps> = ({ variant, outline, children, ...props }
       }
       break;
   }
-  return <button className={`px-8 py-1 rounded-full border-1 border-gray-400 font-gotham-bold transform hover:scale-105 focus:scale-100 transition duration-50 ${className}`} {...props}>{children}</button>
+  return <button className={`px-8 py-1 rounded-full border border-gray-400 font-gotham-bold transform hover:scale-105 focus:scale-100 transition duration-50 ${className}`} {...props}>{children}</button>
 }
 
 Button.defaultProps = {

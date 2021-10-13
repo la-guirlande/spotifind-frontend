@@ -38,9 +38,6 @@ module.exports = {
           dark: '#9E1005'
         }
       },
-      borderWidth: {
-        '1': '1px'
-      },
       transitionDuration: {
         '50': '50ms'
       }
