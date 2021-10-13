@@ -1,9 +1,9 @@
 import { createContext, FC, useEffect, useState } from 'react';
 import { Status, useQuery } from '../hooks/query-hook';
-import { Config } from '../types/configuration';
-import { UserData } from '../types/data-types';
-import { LocalStorageKey } from '../types/local-storage';
-import { AccessTokenResponse, UserInfoResponse } from '../types/response-types';
+import { Config } from '../util/configuration';
+import { UserData } from '../util/data-types';
+import { LocalStorageKey } from '../util/local-storage';
+import { AccessTokenResponse, UserInfoResponse } from '../util/response-types';
 
 /**
  * Authentication context state.

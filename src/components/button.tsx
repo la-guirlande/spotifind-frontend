@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, FC } from 'react';
-import { Variant } from '../types/styles';
+import { Variant } from '../util/styles';
 
 /**
  * Button props.

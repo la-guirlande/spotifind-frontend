@@ -1,6 +1,6 @@
 import { AnchorHTMLAttributes, FC } from 'react';
 import { Link as ReactRouterLink, LinkProps as ReactRouterLinkProps } from 'react-router-dom';
-import { Variant } from '../types/styles';
+import { Variant } from '../util/styles';
 
 /**
  * Link props.
@@ -36,7 +36,7 @@ export const Link: FC<LinkProps> = ({ variant, children, ...props }) => {
       className = 'text-error hover:text-error-light';
       break;
   }
-  return <ReactRouterLink className={`px-8 py-1 rounded-full font-gotham-bold transform hover:scale-105 focus:scale-100 transition duration-50 ${className}`} {...props}>{children}</ReactRouterLink>
+  return <ReactRouterLink className={`rounded-full font-gotham-bold transform hover:scale-105 focus:scale-100 transition duration-50 ${className}`} {...props}>{children}</ReactRouterLink>
 }
 
 Link.defaultProps = {
