@@ -7,10 +7,10 @@ import { HomePage } from './pages/home-page';
  */
 export const Router: FC = () => (
   <BrowserRouter>
-      <Switch>
-        <Route path="/">
-          <HomePage />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route path="/">
+        <HomePage />
+      </Route>
+    </Switch>
+  </BrowserRouter>
 );
