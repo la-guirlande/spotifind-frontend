@@ -41,3 +41,14 @@ export interface AccessTokenResponse extends Response {
 export interface AccessTokenResponse extends Response {
   access_token: string;
 }
+
+/**
+ * Spotify token response.
+ * 
+ * Returned by `POST https://accounts.spotify.com/api/token`
+ */
+export interface SpotifyTokenResponse extends Response {
+  access_token: string;
+  refresh_token: string;
+  scope: string;
+}
