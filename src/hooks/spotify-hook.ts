@@ -1,6 +1,7 @@
 import randomString from 'crypto-random-string';
 import _ from 'lodash';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
+import { AuthenticationContext } from '../contexts/authentication-context';
 import { Config } from '../util/configuration';
 import * as crypto from '../util/crypto';
 import { LocalStorageKey } from '../util/local-storage';
@@ -24,6 +25,7 @@ export interface Spotify {
  * @returns Spotify hook data
  */
 export const useSpotify = (): Spotify => {
+  const { refresh: refreshAuthUser } = useContext(AuthenticationContext);
   const queryParams = useQueryParams();
   const tokenQuery = useQuery<SpotifyTokenResponse>();
 
@@ -35,6 +37,7 @@ export const useSpotify = (): Spotify => {
         localStorage.setItem(LocalStorageKey.SPOTIFY_ACCESS_TOKEN, tokenQuery.response.access_token);
         localStorage.setItem(LocalStorageKey.SPOTIFY_REFRESH_TOKEN, tokenQuery.response.refresh_token);
         tokenQuery.reset();
+        refreshAuthUser();
         break;
       case Status.ERROR:
         localStorage.removeItem(LocalStorageKey.OAUTH2_CODE_VERIFIER);
