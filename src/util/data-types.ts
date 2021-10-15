@@ -19,6 +19,24 @@ export interface ErrorData {
  * User data.
  */
 export interface UserData extends BaseData {
+  spotifyId: string;
+}
+
+/**
+ * Spotify user data.
+ */
+export interface SpotifyUserData extends BaseData {
+  display_name: string;
   email: string;
-  name: string;
+  external_urls: {
+    spotify: string;
+  };
+  followers: {
+    total: number;
+  };
+  images: {
+    url: string;
+    width: string;
+    height: string;
+  }[];
 }
