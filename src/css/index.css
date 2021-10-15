@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Gotham-Black";
+    src: url("../fonts/gotham/Gotham-Black.otf");
+  }
+
+  @font-face {
+    font-family: "Gotham-Medium";
+    src: url("../fonts/gotham/GothamMedium.ttf");
+  }
+  
+  @font-face {
+    font-family: "Gotham-Book";
+    src: url("../fonts/gotham/GothamBook.ttf");
+  }
+
+  @font-face {
+    font-family: "Gotham-Bold";
+    src: url("../fonts/gotham/GothamBold.ttf");
+  }
+}
+
+* {
+  @apply font-gotham-book;
+}
+
+html, body {
+  @apply h-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200;
+}
