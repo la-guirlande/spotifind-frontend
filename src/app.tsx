@@ -9,8 +9,5 @@ import { Router } from './router';
  * This component is the entry point of the website.
  */
 export const App: FC = () => (
-  <AuthenticationContextProvider>
     <Router />
-    <Footer />
-  </AuthenticationContextProvider>
 );
