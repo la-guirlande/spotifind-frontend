@@ -1,4 +1,4 @@
-import { ErrorData, UserData } from './data-types';
+import { ErrorData, SpotifyUserData, UserData } from './data-types';
 
 /**
  * Base response.
@@ -13,6 +13,13 @@ export interface Response {}
 export interface ErrorResponse extends Response {
   errors: ErrorData[];
 }
+
+/**
+ * Creation response.
+ * 
+ * Returned after some POST requests.
+ */
+export interface CreationResponse extends Response {}
 
 /**
  * User information response.
@@ -52,3 +59,10 @@ export interface SpotifyTokenResponse extends Response {
   refresh_token: string;
   scope: string;
 }
+
+/**
+ * Spotify user response.
+ * 
+ * Returned by `GET /me` or `GET /users/:userId`
+ */
+export interface SpotifyUserResponse extends Response, SpotifyUserData {}
