@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Button } from '../components/button';
-import { useSpotify } from '../hooks/spotify-hook';
+import { useAuthentication } from '../hooks/authentication-hook';
 
 /**
  * Connection page props.
@@ -11,19 +11,18 @@ export interface ConnectionPageProps {
 
 /**
  * Connection page.
- *  
  */
 export const ConnectionPage: FC<ConnectionPageProps> = ({ callback }) => {
-  const spotify = useSpotify();
+  const auth = useAuthentication();
 
   useEffect(() => {
     if (callback) {
-      spotify.token();
+      auth.token();
     }
   }, []);
 
   return (
-    <Button variant="primary" onClick={spotify.connect}>Connect to Spotify</Button>
+    <Button variant="primary" onClick={auth.connect}>Connect to Spotify</Button>
   );
 }
 
