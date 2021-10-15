@@ -1,6 +1,4 @@
 import { FC } from 'react';
-import { AuthenticationContextProvider } from './contexts/authentication-context';
-import { Footer } from './pages/footer';
 import { Router } from './router';
 
 /**
