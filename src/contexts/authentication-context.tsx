@@ -4,7 +4,7 @@ import { Status, useQuery } from '../hooks/query-hook';
 import { Config } from '../util/configuration';
 import { UserData } from '../util/data-types';
 import { LocalStorageKey } from '../util/local-storage';
-import { UserInfoResponse } from '../util/response-types';
+import { UserInfoResponse } from '../types/response-types';
 
 /**
  * Authentication context state.
