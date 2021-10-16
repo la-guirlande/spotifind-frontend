@@ -18,7 +18,7 @@ export interface ErrorData {
 /**
  * Spotify user data.
  */
- export interface UserData extends BaseData {
+ export interface SpotifyUserData extends BaseData {
   href: string;
   email: string;
   display_name: string;
@@ -39,7 +39,7 @@ export interface ErrorData {
 /**
  * Spotify artist data.
  */
-export interface ArtistData extends BaseData {
+export interface SpotifyrtistData extends BaseData {
   href: string;
   name: string;
   genres: string[];
@@ -59,7 +59,7 @@ export interface ArtistData extends BaseData {
 /**
  * Spotify track data.
  */
-export interface TrackData extends BaseData {
+export interface SpotifyTrackData extends BaseData {
   href: string;
   name: string;
   artists: [{
@@ -82,7 +82,7 @@ export interface TrackData extends BaseData {
 /**
  * Spotify playlist data.
  */
-export interface PlaylistData extends BaseData {
+export interface SpotifyPlaylistData extends BaseData {
   href: string;
   name: string;
   description: string;
