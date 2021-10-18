@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthenticationContextProvider } from './contexts/authentication-context';
+import { WebsocketContextProvider } from './contexts/websocket-context';
 import { Router } from './router';
 
 /**
@@ -11,7 +12,9 @@ import { Router } from './router';
 export const App: FC = () => (
     <BrowserRouter>
         <AuthenticationContextProvider>
-            <Router />
+            <WebsocketContextProvider>
+                <Router />
+            </WebsocketContextProvider>
         </AuthenticationContextProvider>
     </BrowserRouter>
 );
