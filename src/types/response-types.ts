@@ -58,6 +58,7 @@ export interface GameResponse extends Response {
  */
 export interface GameCreationResponse extends CreationResponse {
   code: string;
+  token: string;
 }
 
 /**
