@@ -1,6 +1,6 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { } from "@fortawesome/free-regular-svg-icons";
-import { faArrowRight, faCircle, faExclamationCircle, faHome, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faCircle, faExclamationCircle, faHome, faPlay, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Global configuration.
@@ -20,6 +20,6 @@ export enum Config {
  * FontAwesome configuration.
  */
 export const faConfig = {
-  load: () => library.add(faArrowRight, faCircle, faExclamationCircle, faHome, faPlay),
+  load: () => library.add(faArrowRight, faCircle, faExclamationCircle, faHome, faPlay, faSpinner),
   reset: () => library.reset()
 }
