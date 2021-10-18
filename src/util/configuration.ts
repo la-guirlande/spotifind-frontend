@@ -1,6 +1,6 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { } from "@fortawesome/free-regular-svg-icons";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faPlay } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Global configuration.
@@ -18,6 +18,6 @@ export enum Config {
  * FontAwesome configuration.
  */
 export const faConfig = {
-  load: () => library.add(faHome),
+  load: () => library.add(faHome, faPlay),
   reset: () => library.reset()
 }

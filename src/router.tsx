@@ -1,8 +1,9 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { AuthenticationContext } from './contexts/authentication-context';
 import { ConnectionPage } from './pages/connection-page';
 import { HomePage } from './pages/home-page';
+import { PlayPage } from './pages/play-page';
 
 /**
  * Router component.
@@ -12,12 +13,27 @@ export const Router: FC = () => {
 
   return (
     <Switch>
-      <Route path="/callback">
-        <ConnectionPage callback />
-      </Route>
-      <Route path="/">
-        {authUser == null ? <ConnectionPage /> : <HomePage />}
-      </Route>
+      {authUser == null
+      ? <>
+          <Route path="/callback">
+            <ConnectionPage callback />
+          </Route>
+          <Route path="/play">
+            <PlayPage />
+          </Route>
+          <Route path="/">
+            <ConnectionPage />
+          </Route>
+        </>
+      : <>
+          <Route path="/play">
+            <PlayPage />
+          </Route>
+          <Route path="/">
+            <HomePage />
+          </Route>
+        </>
+      }
     </Switch>
   );
 }
