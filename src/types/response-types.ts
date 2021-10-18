@@ -1,4 +1,4 @@
-import { ErrorData, SpotifyUserData, UserData } from '../util/data-types';
+import { ErrorData, GameData, SpotifyUserData, UserData } from '../util/data-types';
 
 /**
  * Base response.
@@ -19,7 +19,9 @@ export interface ErrorResponse extends Response {
  * 
  * Returned after some POST requests.
  */
-export interface CreationResponse extends Response {}
+export interface CreationResponse extends Response {
+  id: string;
+}
 
 /**
  * User information response.
@@ -41,12 +43,21 @@ export interface AccessTokenResponse extends Response {
 }
 
 /**
- * Access token response.
+ * Game response.
  * 
- * Returned by `POST /auth/accessToken`
+ * Returned by `GET /games/:gameId`
  */
-export interface AccessTokenResponse extends Response {
-  access_token: string;
+export interface GameResponse extends Response {
+  game: GameData;
+}
+
+/**
+ * Game creation response.
+ * 
+ * Returned by `POST /games`
+ */
+export interface GameCreationResponse extends CreationResponse {
+  code: string;
 }
 
 /**
