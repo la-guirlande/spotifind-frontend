@@ -9,6 +9,9 @@ module.exports = {
         'gotham-book': ['Gotham-Book'],
         'gotham-bold': ['Gotham-Bold']
       },
+      spacing: {
+        '18': '4.5rem'
+      },
       colors: {
         primary: {
           light: '#9752FF',
