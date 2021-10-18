@@ -8,7 +8,7 @@ import { GameContainer } from '../containers/game-container';
  * This view is showed at the center of the home page.
  */
 export const MainView: FC = () => (
-  <div className="container flex flex-col px-4">
+  <div className="container py-6">
     <Switch>
       <Route path="/play/:gameId?">
         <GameContainer />

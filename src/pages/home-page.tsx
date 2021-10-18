@@ -13,7 +13,7 @@ export const HomePage: FC = () => (
     <div className="row-span-2 col-span-3 bg-gray-300 dark:bg-gray-700">
       <MainView />
     </div>
-    <div className="hidden md:block row-span-2">
+    <div className="hidden md:block row-span-2 bg-white dark:bg-black">
       Right view
     </div>
     <div className="col-span-full">
