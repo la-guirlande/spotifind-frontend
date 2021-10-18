@@ -160,21 +160,21 @@ export interface WebsocketErrorEvent extends Event, ErrorResponse {}
 /**
  * Websocket test event (client to server).
  */
-export interface WebsocketTestClientToServerEvent extends Event {
+export interface WebsocketTestClientToServerEvent extends WebsocketEvent {
   [key: string]: unknown;
 }
 
 /**
  * Websocket test event (server to client).
  */
-export interface WebsocketTestServerToClientEvent extends Event {
+export interface WebsocketTestServerToClientEvent extends WebsocketEvent {
   [key: string]: unknown;
 }
 
 /**
  * Websocket join event (client to server).
  */
-export interface WebsocketJoinClientToServerEvent extends Event {
+export interface WebsocketJoinClientToServerEvent extends WebsocketEvent {
   code: string;
   name: string;
 }
@@ -182,21 +182,21 @@ export interface WebsocketJoinClientToServerEvent extends Event {
 /**
  * Websocket join event (server to client).
  */
-export interface WebsocketJoinServerToClientEvent extends Event {
+export interface WebsocketJoinServerToClientEvent extends WebsocketEvent {
   token: string;
 }
 
 /**
  * Websocket connect event (client to server).
  */
-export interface WebsocketConnectClientToServerEvent extends Event {
+export interface WebsocketConnectClientToServerEvent extends WebsocketEvent {
   token: string;
 }
 
 /**
  * Websocket connect event (server to client).
  */
-export interface WebsocketConnectServerToClientEvent extends Event {
+export interface WebsocketConnectServerToClientEvent extends WebsocketEvent {
   game: GameData;
   player: PlayerData;
 }
@@ -204,21 +204,21 @@ export interface WebsocketConnectServerToClientEvent extends Event {
 /**
  * Websocket connect event (server to broadcast).
  */
-export interface WebsocketConnectServerToBroadcastEvent extends Event {
+export interface WebsocketConnectServerToBroadcastEvent extends WebsocketEvent {
   player: PlayerData;
 }
 
 /**
  * Websocket start event (client to server).
  */
-export interface WebsocketStartClientToServerEvent extends Event {
+export interface WebsocketStartClientToServerEvent extends WebsocketEvent {
   token: string;
 }
 
 /**
  * Websocket start event (server to broadcast).
  */
-export interface WebsocketStartServerToBroadcastEvent extends Event {
+export interface WebsocketStartServerToBroadcastEvent extends WebsocketEvent {
   game: GameData;
 }
 
