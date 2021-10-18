@@ -1,18 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useMemo } from 'react';
-import { GameData, GameStatus } from '../util/data-types';
+import { GameData, GameStatus } from '../../util/data-types';
+import { Badge } from '../badge';
+import { Loader } from '../loader';
+import { PlayerList } from './player-list';
 
 /**
  * Game informations component props.
  */
 export interface GameInfoprops {
-  game: GameData;
+  game?: GameData;
+  loading?: boolean;
 }
 
 /**
  * Game informations component.
  */
-export const GameInfo: FC<GameInfoprops> = ({ game }) => {
+export const GameInfo: FC<GameInfoprops> = ({ game, loading }) => {
   const status = useMemo(() => {
     switch (game.status) {
       case GameStatus.INIT:
@@ -34,10 +38,27 @@ export const GameInfo: FC<GameInfoprops> = ({ game }) => {
     }
   }, [game.status]);
 
+  const title = useMemo(() => {
+    if (loading) {
+      return (
+        <>Loading game <Loader /></>
+      );
+    }
+    if (game.id !== '-1') {
+      return (
+        <>Game found</>
+      );
+    }
+    return (
+      <>Game not found</>
+    );
+  }, [loading, game]);
+
   return (
     <div className="grid grid-cols-3 gap-5 p-5 rounded-lg bg-light dark:bg-dark border-2 border-dark dark:border-light">
-      <div className="col-span-3 text-center font-bold">
-        <h2>Game found : <span className="p-1 rounded-md bg-info-dark border-2 border-primary">{game.code}</span></h2>
+      <div className="col-span-3 flex justify-between font-bold">
+        <h2>{title}</h2>
+        <Badge variant="info">{game.code}</Badge>
       </div>
       <div className="flex flex-col">
         <div>
@@ -48,23 +69,18 @@ export const GameInfo: FC<GameInfoprops> = ({ game }) => {
         </div>
       </div>
       <div className="col-span-2">
-        <table className="w-full text-center">
-          <thead>
-            <tr>
-              <th>Player</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-          {game.players.map((player, i) => (
-            <tr key={i}>
-              <td>{player.name}</td>
-              <td>{player.score}</td>
-            </tr>
-          ))}
-          </tbody>
-        </table>
+        <PlayerList className="w-full text-center" players={game.players} />
       </div>
     </div>
   );
+}
+
+GameInfo.defaultProps = {
+  game: {
+    id: '-1',
+    status: null,
+    code: '000000',
+    players: []
+  },
+  loading: false
 }
