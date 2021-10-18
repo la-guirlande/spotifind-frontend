@@ -1,3 +1,5 @@
+import { ErrorResponse } from '../types/response-types';
+
 /**
  * Base data.
  */
@@ -137,3 +139,86 @@ export interface SpotifyPlaylistData extends BaseData {
     spotify: string;
   };
 }
+
+/**
+ * Websocket event types.
+ */
+export enum WebsocketEventType {
+  ERROR = 'error', TEST = 'test', JOIN = 'join', CONNECT = 'co', START = 'start'
+}
+
+/**
+ * Base websocket event.
+ */
+export interface WebsocketEvent {}
+
+/**
+ * Websocket error event.
+ */
+export interface WebsocketErrorEvent extends Event, ErrorResponse {}
+
+/**
+ * Websocket test event (client to server).
+ */
+export interface WebsocketTestClientToServerEvent extends Event {
+  [key: string]: unknown;
+}
+
+/**
+ * Websocket test event (server to client).
+ */
+export interface WebsocketTestServerToClientEvent extends Event {
+  [key: string]: unknown;
+}
+
+/**
+ * Websocket join event (client to server).
+ */
+export interface WebsocketJoinClientToServerEvent extends Event {
+  code: string;
+  name: string;
+}
+
+/**
+ * Websocket join event (server to client).
+ */
+export interface WebsocketJoinServerToClientEvent extends Event {
+  token: string;
+}
+
+/**
+ * Websocket connect event (client to server).
+ */
+export interface WebsocketConnectClientToServerEvent extends Event {
+  token: string;
+}
+
+/**
+ * Websocket connect event (server to client).
+ */
+export interface WebsocketConnectServerToClientEvent extends Event {
+  game: GameData;
+  player: PlayerData;
+}
+
+/**
+ * Websocket connect event (server to broadcast).
+ */
+export interface WebsocketConnectServerToBroadcastEvent extends Event {
+  player: PlayerData;
+}
+
+/**
+ * Websocket start event (client to server).
+ */
+export interface WebsocketStartClientToServerEvent extends Event {
+  token: string;
+}
+
+/**
+ * Websocket start event (server to broadcast).
+ */
+export interface WebsocketStartServerToBroadcastEvent extends Event {
+  game: GameData;
+}
+
