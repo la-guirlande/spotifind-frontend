@@ -1,4 +1,4 @@
-import { ErrorResponse } from '../types/response-types';
+import { ErrorResponse } from './response-types';
 
 /**
  * Base data.

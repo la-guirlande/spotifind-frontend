@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Config } from '../util/configuration';
 import crypto from '../util/crypto';
 import { LocalStorageKey } from '../util/local-storage';
-import { AccessTokenResponse, SpotifyTokenResponse } from '../types/response-types';
+import { AccessTokenResponse, SpotifyTokenResponse } from '../util/response-types';
 import { Status, useQuery } from './query-hook';
 import { useQueryParams } from './query-params-hook';
 

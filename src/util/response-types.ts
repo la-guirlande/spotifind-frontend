@@ -1,4 +1,4 @@
-import { ErrorData, GameData, SpotifyUserData, UserData } from '../util/data-types';
+import { ErrorData, GameData, SpotifyUserData, UserData } from './data-types';
 
 /**
  * Base response.
