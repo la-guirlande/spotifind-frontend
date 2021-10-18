@@ -1,9 +1,8 @@
-import { FC, useContext, useMemo } from 'react';
+import { FC, useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { AuthenticationContext } from './contexts/authentication-context';
 import { ConnectionPage } from './pages/connection-page';
 import { HomePage } from './pages/home-page';
-import { PlayPage } from './pages/play-page';
 
 /**
  * Router component.
@@ -23,9 +22,6 @@ export const Router: FC = () => {
           </Route>
         </>
       : <>
-          <Route path="/play">
-            <PlayPage />
-          </Route>
           <Route path="/">
             <HomePage />
           </Route>
