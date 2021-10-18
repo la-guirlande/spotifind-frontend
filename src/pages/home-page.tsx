@@ -1,16 +1,17 @@
 import { FC } from 'react';
 import { Sidebar } from '../components/sidebar';
+import { MainView } from '../views/main-view';
 
 /**
  * Home page component.
  */
 export const HomePage: FC = () => (
   <div className="h-screen grid grid-rows-2 grid-cols-1 md:grid-cols-3 justify-items-stretch">
-    <div className="hidden md:inline">
+    <div className="hidden md:inline bg-white dark:bg-black">
       <Sidebar />
     </div>
-    <div>
-      Main view
+    <div className="bg-gray-300 dark:bg-gray-700">
+      <MainView />
     </div>
     <div className="hidden md:block">
       Right view

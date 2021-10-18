@@ -8,7 +8,7 @@ import { Link } from './link';
  */
 export const Sidebar: FC = () => {
   return (
-    <div className="container flex flex-col px-4 bg-white dark:bg-black">
+    <div className="container flex flex-col px-4">
       <div className="py-2">
         <ReactRouterLink to="/">
           <img src="https://logo-marque.com/wp-content/uploads/2020/09/Spotify-Logo.png" width={150} alt="Spotifind logo" />
