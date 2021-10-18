@@ -1,11 +1,10 @@
 import { ButtonHTMLAttributes, FC } from 'react';
-import { Variant } from '../util/styles';
+import { VariantProps } from '../util/prop-types';
 
 /**
  * Button props.
  */
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: Variant;
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps {
   outline?: boolean;
 }
 
