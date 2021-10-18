@@ -43,6 +43,9 @@ export const GameInfo: FC<GameInfoprops> = ({ game }) => {
         <div>
           <FontAwesomeIcon icon="arrow-right" /> <span className="font-bold">Status</span> : {status}
         </div>
+        <div>
+          <FontAwesomeIcon icon="arrow-right" /> <span className="font-bold">Players</span> : {game.players.length}
+        </div>
       </div>
       <div className="col-span-2">
         <table className="w-full text-center">
