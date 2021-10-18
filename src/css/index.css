@@ -55,3 +55,11 @@ h5 {
 input {
   @apply disabled:opacity-50;
 }
+
+table {
+  @apply border border-collapse border-dark dark:border-light;
+}
+
+table th, td {
+  @apply border border-dark dark:border-light;
+}
