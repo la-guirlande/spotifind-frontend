@@ -7,6 +7,7 @@ import { faHome, faPlay } from "@fortawesome/free-solid-svg-icons";
  */
 export enum Config {
   API_URL = 'http://localhost',
+  WEBSOCKET_URL = 'http://localhost:8000',
   SPOTIFY_CLIENT_ID = '3df18684f075416587d57316c9d5165f',
   REDIRECT_URI = 'http://localhost:3000/callback',
   SPOTIFY_AUTHORIZE_URL = 'https://accounts.spotify.com/authorize',
