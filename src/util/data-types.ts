@@ -30,7 +30,7 @@ export interface UserData extends BaseData {
 export interface GameData extends BaseData {
   status: GameStatus;
   code: string;
-  players: PlayerData;
+  players: PlayerData[];
 }
 
 /**

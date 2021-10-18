@@ -43,6 +43,15 @@ export interface AccessTokenResponse extends Response {
 }
 
 /**
+ * Games response.
+ * 
+ * Returned by `GET /games`
+ */
+export interface GamesResponse extends Response {
+  games: GameData[];
+}
+
+/**
  * Game response.
  * 
  * Returned by `GET /games/:gameId`

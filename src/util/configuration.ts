@@ -1,6 +1,6 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { } from "@fortawesome/free-regular-svg-icons";
-import { faHome, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faCircle, faExclamationCircle, faHome, faPlay } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Global configuration.
@@ -12,13 +12,14 @@ export enum Config {
   REDIRECT_URI = 'http://localhost:3000/callback',
   SPOTIFY_AUTHORIZE_URL = 'https://accounts.spotify.com/authorize',
   SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token',
-  SPOTIFY_API_URL = 'https://api.spotify.com/v1'
+  SPOTIFY_API_URL = 'https://api.spotify.com/v1',
+  CODE_LENGTH = 6
 }
 
 /**
  * FontAwesome configuration.
  */
 export const faConfig = {
-  load: () => library.add(faHome, faPlay),
+  load: () => library.add(faArrowRight, faCircle, faExclamationCircle, faHome, faPlay),
   reset: () => library.reset()
 }
