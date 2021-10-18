@@ -18,9 +18,6 @@ export const Router: FC = () => {
           <Route path="/callback">
             <ConnectionPage callback />
           </Route>
-          <Route path="/play">
-            <PlayPage />
-          </Route>
           <Route path="/">
             <ConnectionPage />
           </Route>
