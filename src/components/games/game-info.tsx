@@ -38,26 +38,10 @@ export const GameInfo: FC<GameInfoprops> = ({ game, loading }) => {
     }
   }, [game.status]);
 
-  const title = useMemo(() => {
-    if (loading) {
-      return (
-        <>Loading game <Loader /></>
-      );
-    }
-    if (game.id !== '-1') {
-      return (
-        <>Game found</>
-      );
-    }
-    return (
-      <>Game not found</>
-    );
-  }, [loading, game]);
-
   return (
     <div className="grid grid-cols-3 gap-5 p-5 rounded-lg bg-light dark:bg-dark border-2 border-dark dark:border-light">
       <div className="col-span-3 flex justify-between font-bold">
-        <h2>{title}</h2>
+        <h2>Game informations</h2>
         <Badge variant="info">{game.code}</Badge>
       </div>
       <div className="flex flex-col">
