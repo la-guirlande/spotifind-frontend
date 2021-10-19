@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitErrorHandler, useForm } from 'react-hook-form';
 import { Config } from '../../util/configuration';
 import { Button } from '../button';
 import { ErrorMessage } from './error-message';
@@ -10,6 +10,8 @@ import { ErrorMessage } from './error-message';
 export interface JoinGameFormProps {
   preloaded?: boolean;
   onPreload?: (code: string) => void;
+  onSubmit?: (data: JoinGameFormValues) => void;
+  onError?: (data: any) => void;
 }
 
 /**
@@ -33,7 +35,7 @@ export const JoinGameForm: FC<JoinGameFormProps> = (props) => {
   });
 
   return (
-    <form className="flex flex-row space-x-2" onSubmit={handleSubmit(data => console.log(data), data => console.error(data))}>
+    <form className="flex flex-row space-x-2" onSubmit={handleSubmit(data => props.onSubmit(data), data => props.onError(data))}>
       <input
         type="text"
         className="w-18 appearance-none rounded-lg outline-none bg-white dark:bg-black text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-600 border-2 border-transparent focus:border-primary-light transition-border"
@@ -53,5 +55,7 @@ export const JoinGameForm: FC<JoinGameFormProps> = (props) => {
 
 JoinGameForm.defaultProps = {
   preloaded: false,
-  onPreload: () => {}
+  onPreload: () => {},
+  onSubmit: () => {},
+  onError: () => {}
 }
