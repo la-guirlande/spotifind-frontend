@@ -202,13 +202,6 @@ export interface WebsocketConnectServerToClientEvent extends WebsocketEvent {
 }
 
 /**
- * Websocket connect event (server to broadcast).
- */
-export interface WebsocketConnectServerToBroadcastEvent extends WebsocketEvent {
-  player: PlayerData;
-}
-
-/**
  * Websocket start event (client to server).
  */
 export interface WebsocketStartClientToServerEvent extends WebsocketEvent {
@@ -218,7 +211,7 @@ export interface WebsocketStartClientToServerEvent extends WebsocketEvent {
 /**
  * Websocket start event (server to broadcast).
  */
-export interface WebsocketStartServerToBroadcastEvent extends WebsocketEvent {
+export interface WebsocketStartServerToClientEvent extends WebsocketEvent {
   game: GameData;
 }
 

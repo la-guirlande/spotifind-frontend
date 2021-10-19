@@ -48,6 +48,10 @@ export const GameContainer: FC = () => {
   const handleJoinGame = (data: JoinGameFormValues) => {
     gameHook.join(data.code);
   }
+
+  const handleStartGame = () => {
+    gameHook.start();
+  }
   
   return (
     <div className="flex flex-col px-4">
@@ -65,7 +69,8 @@ export const GameContainer: FC = () => {
     }
     {gameHook.game?.status === GameStatus.INIT &&
       <>INIT
-        {/* Player list and start button */}
+        <GameInfo game={gameHook.game} />
+        <Button variant="primary" onClick={handleStartGame}>Start game</Button>
       </>
     }
     {gameHook.game?.status === GameStatus.IN_PROGRESS &&
