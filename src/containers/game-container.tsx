@@ -9,6 +9,7 @@ import { useGame } from '../hooks/game-hook';
 import { Status, useQuery } from '../hooks/query-hook';
 import { Config } from '../util/configuration';
 import { GameStatus } from '../util/data-types';
+import { LocalStorageKey } from '../util/local-storage';
 import { GamesResponse } from '../util/response-types';
 
 /**
@@ -17,7 +18,7 @@ import { GamesResponse } from '../util/response-types';
  */
 export const GameContainer: FC = () => {
   const { authUser } = useContext(AuthenticationContext);
-  const gameHook = useGame();
+  const gameHook = useGame(localStorage.getItem(LocalStorageKey.GAME_TOKEN));
   const params = useParams<{ gameId: string }>();
   const preloadGameQuery = useQuery<GamesResponse>();
 

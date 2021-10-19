@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { WebsocketContext } from '../contexts/websocket-context';
 import { Config } from '../util/configuration';
 import { GameData, WebsocketConnectClientToServerEvent, WebsocketConnectServerToClientEvent, WebsocketEventType, WebsocketJoinClientToServerEvent, WebsocketJoinServerToClientEvent } from '../util/data-types';
+import { LocalStorageKey } from '../util/local-storage';
 import { GameCreationResponse } from '../util/response-types';
 import { Query, Status, useQuery } from './query-hook';
 
@@ -22,11 +23,12 @@ export interface GameHook {
  * 
  * This hook is used to manage games (create, join, connect, ...).
  * 
+ * @param gameToken Game token
  * @returns Game hook values
  */
-export const useGame = (): GameHook => {
+export const useGame = (gameToken?: string): GameHook => {
   const { socket } = useContext(WebsocketContext);
-  const [token, setToken] = useState<string>(null);
+  const [token, setToken] = useState<string>(gameToken);
   const createGameQuery = useQuery<GameCreationResponse>();
   const [game, setGame] = useState<GameData>(null);
 
@@ -54,6 +56,7 @@ export const useGame = (): GameHook => {
 
   useEffect(() => {
     if (token != null) {
+      localStorage.setItem(LocalStorageKey.GAME_TOKEN, token);
       connect();
     }
   }, [token]);
