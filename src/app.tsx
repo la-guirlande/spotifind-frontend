@@ -1,6 +1,4 @@
 import { FC } from 'react';
-import { AuthenticationContextProvider } from './contexts/authentication-context';
-import { Footer } from './pages/footer';
 import { Router } from './router';
 
 /**
@@ -9,8 +7,5 @@ import { Router } from './router';
  * This component is the entry point of the website.
  */
 export const App: FC = () => (
-  <AuthenticationContextProvider>
     <Router />
-    <Footer />
-  </AuthenticationContextProvider>
 );

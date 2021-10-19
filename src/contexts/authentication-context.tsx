@@ -1,9 +1,10 @@
 import { createContext, FC, useEffect, useState } from 'react';
+import { useAuthentication } from '../hooks/authentication-hook';
 import { Status, useQuery } from '../hooks/query-hook';
-import { Config } from '../types/configuration';
-import { UserData } from '../types/data-types';
-import { LocalStorageKey } from '../types/local-storage';
-import { AccessTokenResponse, UserInfoResponse } from '../types/response-types';
+import { Config } from '../util/configuration';
+import { UserData } from '../util/data-types';
+import { LocalStorageKey } from '../util/local-storage';
+import { UserInfoResponse } from '../util/response-types';
 
 /**
  * Authentication context state.
@@ -25,14 +26,19 @@ export const AuthenticationContext = createContext<AuthenticationContextState>({
  */
 export const AuthenticationContextProvider: FC = (props) => {
   const [authUser, setAuthUser] = useState<UserData>(null);
+  const auth = useAuthentication();
   const userInfoQuery = useQuery<UserInfoResponse>();
-  const accessTokenQuery = useQuery<AccessTokenResponse>();
 
   useEffect(() => {
     switch (userInfoQuery.status) {
       case Status.INIT:
         const accessToken = localStorage.getItem(LocalStorageKey.ACCESS_TOKEN);
-        if (accessToken != null) {
+        if (accessToken == null) {
+          const spotifyRefreshToken = localStorage.getItem(LocalStorageKey.SPOTIFY_REFRESH_TOKEN);
+          if (spotifyRefreshToken != null) {
+            auth.connect();
+          }
+        } else {
           userInfoQuery.get(`${Config.API_URL}/users/info`, { headers: { Authorization: `Bearer ${accessToken}` } });
         }
         break;
@@ -41,28 +47,10 @@ export const AuthenticationContextProvider: FC = (props) => {
         console.log(`Authenticated with access token ${localStorage.getItem(LocalStorageKey.ACCESS_TOKEN)}`);
         break;
       case Status.ERROR:
-        const refreshToken = localStorage.getItem(LocalStorageKey.REFRESH_TOKEN);
-        if (refreshToken && userInfoQuery.code === 401) {
-          accessTokenQuery.post(`${Config.API_URL}/auth/accessToken`, { refresh_token: refreshToken });
-        } else {
-          console.error('Authentication failed :', userInfoQuery.errorResponse.errors);
-        }
+        console.error('Authentication failed :', userInfoQuery.errorResponse.errors);
         break;
     }
   }, [userInfoQuery.status]);
-
-  useEffect(() => {
-    switch (accessTokenQuery.status) {
-      case Status.SUCCESS:
-        const { access_token } = accessTokenQuery.response;
-        localStorage.setItem(LocalStorageKey.ACCESS_TOKEN, access_token);
-        userInfoQuery.reset();
-        break;
-      case Status.ERROR:
-        console.error('Authentication failed :', accessTokenQuery.errorResponse.errors);
-        break;
-    }
-  }, [accessTokenQuery.status]);
 
   return (
     <AuthenticationContext.Provider value={{ authUser, setAuthUser }}>{props.children}</AuthenticationContext.Provider>
