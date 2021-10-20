@@ -35,10 +35,10 @@ export const JoinGameForm: FC<JoinGameFormProps> = (props) => {
   });
 
   return (
-    <form className="flex flex-row space-x-2" onSubmit={handleSubmit(data => props.onSubmit(data), data => props.onError(data))}>
+    <form className="flex flex-row" onSubmit={handleSubmit(data => props.onSubmit(data), data => props.onError(data))}>
       <input
         type="text"
-        className="w-18 appearance-none rounded-lg outline-none bg-white dark:bg-black text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-600 border-2 border-transparent focus:border-primary-light transition-border"
+        className="w-18 appearance-none border-none rounded-l-sm outline-none bg-white text-black placeholder-gray-400 dark:placeholder-gray-600 border-2 border-transparent focus:border-primary-light transition-border"
         placeholder="Code"
         maxLength={Number(Config.CODE_LENGTH)}
         {...codeRest}
@@ -48,7 +48,7 @@ export const JoinGameForm: FC<JoinGameFormProps> = (props) => {
         }}
       />
       {errors.code && <ErrorMessage>{errors.code.message}</ErrorMessage>}
-      <Button type="submit" disabled={!props.preloaded}>Join game</Button>
+      <Button type="submit" variant="dark" className="rounded-r-sm" disabled={!props.preloaded}>Join game</Button>
     </form>
   );
 }

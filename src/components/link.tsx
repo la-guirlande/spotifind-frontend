@@ -34,7 +34,7 @@ export const Link: FC<LinkProps> = ({ variant, children, ...props }) => {
       className = 'text-error hover:text-error-light';
       break;
   }
-  return <ReactRouterLink className={`rounded-full font-gotham-bold transform hover:scale-105 focus:scale-100 transition duration-50 ${className}`} {...props}>{children}</ReactRouterLink>
+  return <ReactRouterLink className={`rounded-full font-light transform hover:scale-105 focus:scale-100 transition duration-50 ${className}`} {...props}>{children}</ReactRouterLink>
 }
 
 Link.defaultProps = {

@@ -64,7 +64,7 @@ export const GameContainer: FC = () => {
     {gameHook.game == null &&
       <>
         <div className="flex flex-row justify-between">
-            <Button variant="primary" onClick={handleCreateGame}>Create new game</Button>
+            <Button variant="dark" onClick={handleCreateGame}>Create new game</Button>
             <span className="text-xl font-bold">OR</span>
             <JoinGameForm preloaded={preloaded} onPreload={handlePreloadGame} onSubmit={handleJoinGame} onError={console.error} />
         </div>
