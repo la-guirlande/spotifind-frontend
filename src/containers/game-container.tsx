@@ -1,9 +1,10 @@
 import _ from 'lodash';
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useContext, useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Button } from '../components/button';
 import { JoinGameForm, JoinGameFormValues } from '../components/forms/join-game-form';
 import { GameInfo } from '../components/games/game-info';
+import { AuthenticationContext } from '../contexts/authentication-context';
 import { useGame } from '../hooks/game-hook';
 import { Status, useQuery } from '../hooks/query-hook';
 import { Config } from '../util/configuration';
@@ -16,8 +17,8 @@ import { GamesResponse } from '../util/response-types';
  * 
  */
 export const GameContainer: FC = () => {
+  const { authUser } = useContext(AuthenticationContext);
   const gameHook = useGame(localStorage.getItem(LocalStorageKey.GAME_TOKEN));
-  const params = useParams<{ gameId: string }>();
   const history = useHistory();
   const preloadGameQuery = useQuery<GamesResponse>();
 
@@ -37,7 +38,7 @@ export const GameContainer: FC = () => {
   }, [preloadGameQuery.status]);
 
   const handleCreateGame = () => {
-    gameHook.create(_.random(0, 1000).toString());
+    gameHook.create(authUser.display_name);
   }
 
   const handlePreloadGame = (code: string) => {

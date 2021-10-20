@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { useContext, useEffect, useState } from 'react';
+import { AuthenticationContext } from '../contexts/authentication-context';
 import { WebsocketContext } from '../contexts/websocket-context';
 import { Config } from '../util/configuration';
 import { GameData, WebsocketConnectClientToServerEvent, WebsocketConnectServerToClientEvent, WebsocketEventType, WebsocketJoinClientToServerEvent, WebsocketJoinServerToClientEvent, WebsocketLeaveClientToServerEvent, WebsocketLeaveServerToClientEvent, WebsocketStartClientToServerEvent, WebsocketStartServerToClientEvent } from '../util/data-types';
@@ -29,6 +30,7 @@ export interface GameHook {
  * @returns Game hook values
  */
 export const useGame = (gameToken?: string): GameHook => {
+  const { authUser } = useContext(AuthenticationContext);
   const { socket } = useContext(WebsocketContext);
   const [token, setToken] = useState<string>(gameToken);
   const createGameQuery = useQuery<GameCreationResponse>();
@@ -72,7 +74,7 @@ export const useGame = (gameToken?: string): GameHook => {
   const join = (code: string) => {
     socket.emit(WebsocketEventType.JOIN, {
       code,
-      name: _.random(0, 1000).toString() // TODO Add author name
+      name: authUser.display_name
     } as WebsocketJoinClientToServerEvent);
   }
 

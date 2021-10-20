@@ -2,16 +2,16 @@ import { createContext, FC, useEffect, useState } from 'react';
 import { useAuthentication } from '../hooks/authentication-hook';
 import { Status, useQuery } from '../hooks/query-hook';
 import { Config } from '../util/configuration';
-import { UserData } from '../util/data-types';
+import { SpotifyUserData } from '../util/data-types';
 import { LocalStorageKey } from '../util/local-storage';
-import { UserInfoResponse } from '../util/response-types';
+import { SpotifyUserResponse, UserInfoResponse } from '../util/response-types';
 
 /**
  * Authentication context state.
  */
 export type AuthenticationContextState = {
-  authUser: UserData,
-  setAuthUser(authUser: UserData): void;
+  authUser: SpotifyUserData,
+  setAuthUser(authUser: SpotifyUserData): void;
 }
 
 /**
@@ -25,9 +25,10 @@ export const AuthenticationContext = createContext<AuthenticationContextState>({
  * Authentication context provider.
  */
 export const AuthenticationContextProvider: FC = (props) => {
-  const [authUser, setAuthUser] = useState<UserData>(null);
+  const [authUser, setAuthUser] = useState<SpotifyUserData>(null);
   const auth = useAuthentication();
   const userInfoQuery = useQuery<UserInfoResponse>();
+  const spotifyUserQuery = useQuery<SpotifyUserResponse>();
 
   useEffect(() => {
     switch (userInfoQuery.status) {
@@ -43,7 +44,7 @@ export const AuthenticationContextProvider: FC = (props) => {
         }
         break;
       case Status.SUCCESS:
-        setAuthUser(userInfoQuery.response.user);
+        spotifyUserQuery.get(`${Config.SPOTIFY_API_URL}/users/${userInfoQuery.response.user.spotifyId}`, { headers: { Authorization: `Bearer ${localStorage.getItem(LocalStorageKey.SPOTIFY_ACCESS_TOKEN)}` } });
         console.log(`Authenticated with access token ${localStorage.getItem(LocalStorageKey.ACCESS_TOKEN)}`);
         break;
       case Status.ERROR:
@@ -51,6 +52,17 @@ export const AuthenticationContextProvider: FC = (props) => {
         break;
     }
   }, [userInfoQuery.status]);
+
+  useEffect(() => {
+    switch (spotifyUserQuery.status) {
+      case Status.SUCCESS:
+        setAuthUser(spotifyUserQuery.response);
+        break;
+      case Status.ERROR:
+        console.error('Could not get Spotify user :', spotifyUserQuery.errorResponse.errors);
+        break;
+    }
+  }, [spotifyUserQuery.status]);
 
   return <AuthenticationContext.Provider value={{ authUser, setAuthUser }}>{props.children}</AuthenticationContext.Provider>;
 }
