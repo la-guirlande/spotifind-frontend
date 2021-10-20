@@ -9,6 +9,9 @@ module.exports = {
         'gotham-book': ['Gotham-Book'],
         'gotham-bold': ['Gotham-Bold']
       },
+      spacing: {
+        '18': '4.5rem'
+      },
       colors: {
         primary: {
           light: '#9752FF',
@@ -38,6 +41,9 @@ module.exports = {
           dark: '#9E1005'
         }
       },
+      transitionProperty: {
+        border: 'border'
+      },
       transitionDuration: {
         '50': '50ms'
       }
@@ -45,7 +51,12 @@ module.exports = {
   },
   variants: {
     extend: {
-      borderWidth: ['hover', 'focus']
+      borderWidth: ['hover', 'focus'],
+      opacity: ['disabled'],
+      scale: ['disabled'],
+      backgroundColor: ['disabled'],
+      backgroundOpacity: ['disabled'],
+      cursor: ['disabled']
     },
   },
   plugins: [],

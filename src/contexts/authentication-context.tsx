@@ -52,7 +52,5 @@ export const AuthenticationContextProvider: FC = (props) => {
     }
   }, [userInfoQuery.status]);
 
-  return (
-    <AuthenticationContext.Provider value={{ authUser, setAuthUser }}>{props.children}</AuthenticationContext.Provider>
-  );
+  return <AuthenticationContext.Provider value={{ authUser, setAuthUser }}>{props.children}</AuthenticationContext.Provider>;
 }

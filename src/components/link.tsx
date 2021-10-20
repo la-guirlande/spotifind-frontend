@@ -1,13 +1,11 @@
 import { AnchorHTMLAttributes, FC } from 'react';
 import { Link as ReactRouterLink, LinkProps as ReactRouterLinkProps } from 'react-router-dom';
-import { Variant } from '../util/styles';
+import { VariantProps } from '../util/prop-types';
 
 /**
  * Link props.
  */
-export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement>, ReactRouterLinkProps {
-  variant?: Variant;
-}
+export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement>, ReactRouterLinkProps, VariantProps {}
 
 /**
  * Link component. 

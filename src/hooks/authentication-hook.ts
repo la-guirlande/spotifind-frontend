@@ -52,6 +52,7 @@ export const useAuthentication = (): Authentication => {
       case Status.SUCCESS:
         const { access_token } = accessTokenQuery.response;
         localStorage.setItem(LocalStorageKey.ACCESS_TOKEN, access_token);
+        window.location.href = '/'; // TODO Make this more user friendly, refreshing page is not good
         break;
       case Status.ERROR:
         console.error('Authentication failed :', accessTokenQuery.errorResponse.errors);

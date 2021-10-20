@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { AuthenticationContext, AuthenticationContextProvider } from './contexts/authentication-context';
+import { Route, Switch } from 'react-router-dom';
+import { AuthenticationContext } from './contexts/authentication-context';
 import { ConnectionPage } from './pages/connection-page';
 import { HomePage } from './pages/home-page';
 
@@ -11,17 +11,22 @@ export const Router: FC = () => {
   const { authUser } = useContext(AuthenticationContext);
 
   return (
-    <BrowserRouter>
-      <AuthenticationContextProvider>
-        <Switch>
+    <Switch>
+      {authUser == null
+      ? <>
           <Route path="/callback">
             <ConnectionPage callback />
           </Route>
           <Route path="/">
-            {authUser == null ? <ConnectionPage /> : <HomePage />}
+            <ConnectionPage />
           </Route>
-        </Switch>
-      </AuthenticationContextProvider>
-    </BrowserRouter>
+        </>
+      : <>
+          <Route path="/">
+            <HomePage />
+          </Route>
+        </>
+      }
+    </Switch>
   );
 }
