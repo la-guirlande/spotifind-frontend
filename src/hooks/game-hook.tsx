@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 import { WebsocketContext } from '../contexts/websocket-context';
 import { Config } from '../util/configuration';
-import { GameData, WebsocketConnectClientToServerEvent, WebsocketConnectServerToClientEvent, WebsocketEventType, WebsocketJoinClientToServerEvent, WebsocketJoinServerToClientEvent, WebsocketStartClientToServerEvent, WebsocketStartServerToClientEvent } from '../util/data-types';
+import { GameData, WebsocketConnectClientToServerEvent, WebsocketConnectServerToClientEvent, WebsocketEventType, WebsocketJoinClientToServerEvent, WebsocketJoinServerToClientEvent, WebsocketLeaveClientToServerEvent, WebsocketLeaveServerToClientEvent, WebsocketStartClientToServerEvent, WebsocketStartServerToClientEvent } from '../util/data-types';
 import { LocalStorageKey } from '../util/local-storage';
 import { GameCreationResponse } from '../util/response-types';
 import { Query, Status, useQuery } from './query-hook';
@@ -16,6 +16,7 @@ export interface GameHook {
   createGameQuery: Query<GameCreationResponse>;
   create: (author: string) => void;
   join: (code: string) => void;
+  leave: () => void;
   start: () => void;
 }
 
@@ -36,6 +37,7 @@ export const useGame = (gameToken?: string): GameHook => {
   useEffect(() => {
     socket.on(WebsocketEventType.ERROR, console.error);
     socket.on(WebsocketEventType.JOIN, (data: WebsocketJoinServerToClientEvent) => setToken(data.token));
+    socket.on(WebsocketEventType.LEAVE, (data: WebsocketLeaveServerToClientEvent) => setGame(data.game));
     socket.on(WebsocketEventType.CONNECT, (data: WebsocketConnectServerToClientEvent) => setGame(data.game));
     socket.on(WebsocketEventType.START, (data: WebsocketStartServerToClientEvent) => setGame(data.game));
     return () => {
@@ -74,6 +76,10 @@ export const useGame = (gameToken?: string): GameHook => {
     } as WebsocketJoinClientToServerEvent);
   }
 
+  const leave = () => {
+    socket.emit(WebsocketEventType.LEAVE, { token } as WebsocketLeaveClientToServerEvent);
+  }
+
   const connect = () => {
     socket.emit(WebsocketEventType.CONNECT, { token } as WebsocketConnectClientToServerEvent);
   }
@@ -82,5 +88,5 @@ export const useGame = (gameToken?: string): GameHook => {
     socket.emit(WebsocketEventType.START, { token } as WebsocketStartClientToServerEvent);
   }
 
-  return { game, token, createGameQuery, create, join, start };
+  return { game, token, createGameQuery, create, join, leave, start };
 }

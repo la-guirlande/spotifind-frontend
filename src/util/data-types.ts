@@ -144,7 +144,7 @@ export interface SpotifyPlaylistData extends BaseData {
  * Websocket event types.
  */
 export enum WebsocketEventType {
-  ERROR = 'error', TEST = 'test', JOIN = 'join', CONNECT = 'co', START = 'start'
+  ERROR = 'error', TEST = 'test', JOIN = 'join', LEAVE = 'leave', CONNECT = 'co', START = 'start'
 }
 
 /**
@@ -184,6 +184,20 @@ export interface WebsocketJoinClientToServerEvent extends WebsocketEvent {
  */
 export interface WebsocketJoinServerToClientEvent extends WebsocketEvent {
   token: string;
+}
+
+/**
+ * Websocket leave event (client to server).
+ */
+export interface WebsocketLeaveClientToServerEvent extends WebsocketEvent {
+  token: string;
+}
+
+/**
+ * Websocket leave event (server to client).
+ */
+export interface WebsocketLeaveServerToClientEvent extends WebsocketEvent {
+  game: GameData;
 }
 
 /**

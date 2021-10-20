@@ -1,10 +1,9 @@
 import _ from 'lodash';
-import { FC, useContext, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router';
+import { FC, useEffect, useMemo } from 'react';
+import { useHistory, useParams } from 'react-router';
 import { Button } from '../components/button';
 import { JoinGameForm, JoinGameFormValues } from '../components/forms/join-game-form';
 import { GameInfo } from '../components/games/game-info';
-import { AuthenticationContext } from '../contexts/authentication-context';
 import { useGame } from '../hooks/game-hook';
 import { Status, useQuery } from '../hooks/query-hook';
 import { Config } from '../util/configuration';
@@ -17,9 +16,9 @@ import { GamesResponse } from '../util/response-types';
  * 
  */
 export const GameContainer: FC = () => {
-  const { authUser } = useContext(AuthenticationContext);
   const gameHook = useGame(localStorage.getItem(LocalStorageKey.GAME_TOKEN));
   const params = useParams<{ gameId: string }>();
+  const history = useHistory();
   const preloadGameQuery = useQuery<GamesResponse>();
 
   const preloaded = useMemo(() => preloadGameQuery.status === Status.SUCCESS && preloadGameQuery.response.games.length === 1, [preloadGameQuery.status]);
@@ -49,6 +48,12 @@ export const GameContainer: FC = () => {
     gameHook.join(data.code);
   }
 
+  const handleLeaveGame = () => {
+    gameHook.leave();
+    localStorage.removeItem(LocalStorageKey.GAME_TOKEN);
+    history.push('/');
+  }
+
   const handleStartGame = () => {
     gameHook.start();
   }
@@ -62,15 +67,17 @@ export const GameContainer: FC = () => {
             <span className="text-xl font-bold">OR</span>
             <JoinGameForm preloaded={preloaded} onPreload={handlePreloadGame} onSubmit={handleJoinGame} onError={console.error} />
         </div>
-        <div className="my-4">
-          <GameInfo game={preloadGameQuery?.response?.games[0]} loading={preloadGameQuery.status === Status.IN_PROGRESS} />
-        </div>
       </>
     }
     {gameHook.game?.status === GameStatus.INIT &&
-      <>INIT
-        <GameInfo game={gameHook.game} />
-        <Button variant="primary" onClick={handleStartGame}>Start game</Button>
+      <>
+        <div className="flex flex-col space-y-2">
+          <GameInfo game={gameHook.game} />
+          <div className="flex justify-between">
+              <Button variant="primary" className="w-1/3" onClick={handleStartGame}>Start game</Button>
+              <Button variant="error" outline className="w-1/3" onClick={handleLeaveGame}>Leave</Button>
+          </div>
+        </div>
       </>
     }
     {gameHook.game?.status === GameStatus.IN_PROGRESS &&
