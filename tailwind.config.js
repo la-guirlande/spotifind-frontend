@@ -56,7 +56,7 @@ module.exports = {
       scale: ['disabled'],
       backgroundColor: ['disabled'],
       backgroundOpacity: ['disabled'],
-      cursor: ['disabled']
+      cursor: ['hover', 'disabled']
     },
   },
   plugins: [],
