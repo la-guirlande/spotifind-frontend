@@ -38,7 +38,7 @@ export const JoinGameForm: FC<JoinGameFormProps> = (props) => {
     <form className="flex flex-row" onSubmit={handleSubmit(data => props.onSubmit(data), data => props.onError(data))}>
       <input
         type="text"
-        className="w-18 appearance-none border-none rounded-l-sm outline-none bg-white text-black placeholder-gray-400 dark:placeholder-gray-600 border-2 border-transparent focus:border-primary-light transition-border"
+        className="w-18 appearance-none border-none rounded-sm outline-none bg-white text-black placeholder-gray-400 dark:placeholder-gray-600 border-2 border-transparent focus:border-primary-light transition-border"
         placeholder="Code"
         maxLength={Number(Config.CODE_LENGTH)}
         {...codeRest}
@@ -48,7 +48,7 @@ export const JoinGameForm: FC<JoinGameFormProps> = (props) => {
         }}
       />
       {errors.code && <ErrorMessage>{errors.code.message}</ErrorMessage>}
-      <Button type="submit" variant="dark" className="rounded-r-sm" disabled={!props.preloaded}>Join game</Button>
+      <Button type="submit" variant="dark" disabled={!props.preloaded}>Join game</Button>
     </form>
   );
 }
