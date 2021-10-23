@@ -141,6 +141,43 @@ export interface SpotifyPlaylistData extends BaseData {
 }
 
 /**
+ * Spotify player data.
+ */
+export interface SpotifyPlayerData {
+  device: {
+    id: string;
+    is_active: boolean
+    is_private_session: boolean;
+    is_restricted: boolean;
+    name: string;
+    type: string;
+    volume_percent: 100;
+  };
+  shuffle_state: boolean;
+  repeat_state: string;
+  timestamp: number;
+  progress_ms: number;
+  is_playing: boolean;
+  item: {
+    id: string;
+    name: string;
+    popularity: number;
+    duration_ms: number;
+    explicit: boolean;
+    external_urls: {
+      spotify: string;
+    };
+    artists: {
+      id: string;
+      name: string;
+      external_urls: {
+        spotify: string;
+      };
+    }[];
+  };
+}
+
+/**
  * Websocket event types.
  */
 export enum WebsocketEventType {
@@ -228,4 +265,3 @@ export interface WebsocketStartClientToServerEvent extends WebsocketEvent {
 export interface WebsocketStartServerToClientEvent extends WebsocketEvent {
   game: GameData;
 }
-

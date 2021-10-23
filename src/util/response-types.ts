@@ -1,4 +1,4 @@
-import { ErrorData, GameData, SpotifyUserData, UserData } from './data-types';
+import { ErrorData, GameData, SpotifyPlayerData, SpotifyPlaylistData, SpotifyUserData, UserData } from './data-types';
 
 /**
  * Base response.
@@ -87,3 +87,19 @@ export interface SpotifyTokenResponse extends Response {
  * Returned by `GET /me` or `GET /users/:userId`
  */
 export interface SpotifyUserResponse extends Response, SpotifyUserData {}
+
+/**
+ * Spotify playlists response.
+ * 
+ * Returned by `GET /me/playlists`.
+ */
+ export interface SpotifyPlaylistsResponse extends Response {
+   items: SpotifyPlaylistData[];
+ }
+
+/**
+ * Spotify player response.
+ * 
+ * Returned by `GET /me/player`.
+ */
+export interface SpotifyPlayerResponse extends Response, SpotifyPlayerData {}
