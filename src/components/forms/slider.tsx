@@ -12,7 +12,7 @@ export interface SliderProps extends InputHTMLAttributes<HTMLInputElement> {
  */
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(({ id, label, checked, ...props }, ref) => (
   <>
-    <input ref={ref} type="checkbox" {...props} hidden />
+    <input ref={ref} type="checkbox" id={id} {...props} hidden />
     <label htmlFor={id}>
       <div className="flex flex-row space-x-2">
         <div className={`w-16 h-6 p-0.5 rounded-full ${checked ? 'bg-green-500' : 'bg-dark'} cursor-pointer`}>
