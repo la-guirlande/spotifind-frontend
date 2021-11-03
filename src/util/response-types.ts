@@ -95,6 +95,7 @@ export interface SpotifyUserResponse extends Response, SpotifyUserData {}
  */
  export interface SpotifyPlaylistsResponse extends Response {
    items: SpotifyPlaylistData[];
+   total: number;
  }
 
 /**

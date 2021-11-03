@@ -31,13 +31,15 @@ export interface GameData extends BaseData {
   status: GameStatus;
   code: string;
   players: PlayerData[];
+  playlistId: string;
+  shuffle: boolean;
 }
 
 /**
  * Game status.
  */
 export enum GameStatus {
-  INIT = 0, IN_PROGRESS = 1, FINISHED = 2
+  INIT = 0, TIMER_BETWEEN = 1, TIMER_CURRENT = 2, FINISHED = 3
 }
 
 /**
@@ -257,6 +259,8 @@ export interface WebsocketConnectServerToClientEvent extends WebsocketEvent {
  */
 export interface WebsocketStartClientToServerEvent extends WebsocketEvent {
   token: string;
+  playlistId: string;
+  shuffle: boolean;
 }
 
 /**

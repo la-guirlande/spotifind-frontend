@@ -62,7 +62,7 @@ export const useAuthentication = (): Authentication => {
 
   const connect = async () => {
     if (localStorage.getItem(LocalStorageKey.SPOTIFY_REFRESH_TOKEN) == null) {
-      const scopes = 'user-read-private user-read-email';
+      const scopes = 'streaming user-read-private user-read-email user-read-playback-state user-modify-playback-state';
       const responseType = 'code';
       const redirectUri = Config.REDIRECT_URI;
       const codeVerifier = randomString({ length: _.random(43, 128, false) });

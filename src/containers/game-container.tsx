@@ -1,27 +1,48 @@
 import _ from 'lodash';
-import { FC, useContext, useEffect, useMemo } from 'react';
+import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Button } from '../components/button';
 import { JoinGameForm, JoinGameFormValues } from '../components/forms/join-game-form';
+import { StartGameForm, StartGameFormValues } from '../components/forms/start-game-form';
 import { GameInfo } from '../components/games/game-info';
 import { AuthenticationContext } from '../contexts/authentication-context';
 import { useGame } from '../hooks/game-hook';
+import { useMediaQuery } from '../hooks/media-query-hook';
+import { usePlayer } from '../hooks/player-hook';
 import { Status, useQuery } from '../hooks/query-hook';
 import { Config } from '../util/configuration';
-import { GameStatus } from '../util/data-types';
+import { GameStatus, SpotifyPlaylistData, WebsocketJoinServerToClientEvent, WebsocketStartServerToClientEvent } from '../util/data-types';
 import { LocalStorageKey } from '../util/local-storage';
-import { GamesResponse } from '../util/response-types';
+import { GamesResponse, SpotifyPlaylistsResponse } from '../util/response-types';
 
 /**
  * Game container.
  * 
  */
 export const GameContainer: FC = () => {
+  const mediaQuery = useMediaQuery();
   const { authUser } = useContext(AuthenticationContext);
-  const gameHook = useGame(localStorage.getItem(LocalStorageKey.GAME_TOKEN));
   const history = useHistory();
   const preloadGameQuery = useQuery<GamesResponse>();
-
+  const playlistsQuery = useQuery<SpotifyPlaylistsResponse>();
+  const player = usePlayer();
+  const [loadedPlaylists, setLoadedPlaylists] = useState<SpotifyPlaylistData[]>([]);
+  const gameHook = useGame(localStorage.getItem(LocalStorageKey.GAME_TOKEN), data => {
+    console.log('starting');
+    player.prepare(data.game.playlistId);
+    player.pause();
+    let seconds = 5;
+    const task = setInterval(() => {
+      console.log('Starting in ', seconds, 'second(s)');
+      seconds--;
+      if (seconds === 0) {
+        player.volume(1);
+        player.play();
+        clearInterval(task);
+      }
+    }, 1000);
+  });
+  
   const preloaded = useMemo(() => preloadGameQuery.status === Status.SUCCESS && preloadGameQuery.response.games.length === 1, [preloadGameQuery.status]);
 
   useEffect(() => console.log('Update current game :', gameHook.game), [gameHook.game]);
@@ -37,6 +58,22 @@ export const GameContainer: FC = () => {
     }
   }, [preloadGameQuery.status]);
 
+  useEffect(() => {
+    if (gameHook.game?.status === GameStatus.INIT) {
+      switch (playlistsQuery.status) {
+        case Status.INIT:
+          handleFetchMorePlaylists();
+          break;
+        case Status.SUCCESS:
+          setLoadedPlaylists(oldState => [...oldState, ...playlistsQuery.response.items]);
+          break;
+        case Status.ERROR:
+          console.error(playlistsQuery.errorResponse.errors);
+          break;
+      }
+    }
+  }, [gameHook.game?.status, playlistsQuery.status]);
+
   const handleCreateGame = () => {
     gameHook.create(authUser.display_name);
   }
@@ -49,14 +86,21 @@ export const GameContainer: FC = () => {
     gameHook.join(data.code);
   }
 
+  const handleFetchMorePlaylists = () => {
+    const limit =
+      mediaQuery === 'sm' ? 2 :
+      mediaQuery === 'xl' ? 5 : 3;
+    playlistsQuery.get(`${Config.SPOTIFY_API_URL}/me/playlists?limit=${loadedPlaylists.length === 0 ? limit * 3 : limit}&offset=${loadedPlaylists.length}`, { headers: { Authorization: `Bearer ${localStorage.getItem(LocalStorageKey.SPOTIFY_ACCESS_TOKEN)}` } });
+  }
+
   const handleLeaveGame = () => {
     gameHook.leave();
     localStorage.removeItem(LocalStorageKey.GAME_TOKEN);
     history.push('/');
   }
 
-  const handleStartGame = () => {
-    gameHook.start();
+  const handleStartGame = (data: StartGameFormValues) => {
+    gameHook.start(data.playlistId, data.shuffle);
   }
   
   return (
@@ -74,16 +118,18 @@ export const GameContainer: FC = () => {
       <>
         <div className="flex flex-col space-y-2">
           <GameInfo game={gameHook.game} />
-          <div className="flex justify-between">
-              <Button variant="primary" className="w-1/3" onClick={handleStartGame}>Start game</Button>
-              <Button variant="error" outline className="w-1/3" onClick={handleLeaveGame}>Leave</Button>
-          </div>
+          <StartGameForm playlists={loadedPlaylists} totalPlaylists={playlistsQuery?.response?.total || 0} onSubmit={handleStartGame} onLeave={handleLeaveGame} onFetchMorePlaylists={handleFetchMorePlaylists} />
         </div>
       </>
     }
-    {gameHook.game?.status === GameStatus.IN_PROGRESS &&
+    {gameHook.game?.status === GameStatus.TIMER_BETWEEN &&
       <>IN PROGRESS
-        {/* Game in progress */}
+        <h3>{player.state != null && player.state.item?.name}</h3>
+        De
+        <ul>
+          {player.state != null && player.state.item?.artists.map((artist, i) => <li key={i}>{artist.name}</li>)}
+        </ul>
+        <Button variant="warn" onClick={() => player.next()}>Next</Button>
       </>
     }
     {gameHook.game?.status === GameStatus.FINISHED &&

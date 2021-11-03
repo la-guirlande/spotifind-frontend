@@ -23,7 +23,8 @@ export const GameInfo: FC<GameInfoprops> = ({ game, loading }) => {
         return (
           <span><FontAwesomeIcon icon="circle" className="text-green-500"></FontAwesomeIcon> Open</span>
         );
-      case GameStatus.IN_PROGRESS:
+      case GameStatus.TIMER_BETWEEN:
+      case GameStatus.TIMER_CURRENT:
         return (
           <span><FontAwesomeIcon icon="circle" className="text-yellow-500"></FontAwesomeIcon> In progress</span>
         );
@@ -64,7 +65,9 @@ GameInfo.defaultProps = {
     id: '-1',
     status: null,
     code: '000000',
-    players: []
+    players: [],
+    playlistId: '',
+    shuffle: true
   },
   loading: false
 }

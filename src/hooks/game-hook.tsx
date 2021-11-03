@@ -18,7 +18,7 @@ export interface GameHook {
   create: (author: string) => void;
   join: (code: string) => void;
   leave: () => void;
-  start: () => void;
+  start: (playlistId: string, shuffle: boolean) => void;
 }
 
 /**
@@ -29,7 +29,9 @@ export interface GameHook {
  * @param gameToken Game token
  * @returns Game hook values
  */
-export const useGame = (gameToken?: string): GameHook => {
+export const useGame = (
+    gameToken?: string,
+    onStart?: (data: WebsocketStartServerToClientEvent) => void): GameHook => {
   const { authUser } = useContext(AuthenticationContext);
   const { socket } = useContext(WebsocketContext);
   const [token, setToken] = useState<string>(gameToken);
@@ -41,11 +43,16 @@ export const useGame = (gameToken?: string): GameHook => {
     socket.on(WebsocketEventType.JOIN, (data: WebsocketJoinServerToClientEvent) => setToken(data.token));
     socket.on(WebsocketEventType.LEAVE, (data: WebsocketLeaveServerToClientEvent) => setGame(data.game));
     socket.on(WebsocketEventType.CONNECT, (data: WebsocketConnectServerToClientEvent) => setGame(data.game));
-    socket.on(WebsocketEventType.START, (data: WebsocketStartServerToClientEvent) => setGame(data.game));
+    socket.on(WebsocketEventType.START, (data: WebsocketStartServerToClientEvent) => {
+      setGame(data.game);
+      onStart(data);
+    });
     return () => {
       socket.off(WebsocketEventType.ERROR);
       socket.off(WebsocketEventType.JOIN);
+      socket.off(WebsocketEventType.LEAVE)
       socket.off(WebsocketEventType.CONNECT);
+      socket.off(WebsocketEventType.START);
     }
   }, []);
 
@@ -86,8 +93,8 @@ export const useGame = (gameToken?: string): GameHook => {
     socket.emit(WebsocketEventType.CONNECT, { token } as WebsocketConnectClientToServerEvent);
   }
 
-  const start = () => {
-    socket.emit(WebsocketEventType.START, { token } as WebsocketStartClientToServerEvent);
+  const start = (playlistId: string, shuffle: boolean) => {
+    socket.emit(WebsocketEventType.START, { token, playlistId, shuffle } as WebsocketStartClientToServerEvent);
   }
 
   return { game, token, createGameQuery, create, join, leave, start };
