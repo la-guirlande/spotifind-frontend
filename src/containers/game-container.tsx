@@ -88,8 +88,8 @@ export const GameContainer: FC = () => {
 
   const handleFetchMorePlaylists = () => {
     const limit =
-      mediaQuery === 'sm' ? 2 :
-      mediaQuery === 'xl' ? 5 : 3;
+      mediaQuery === 'sm' ? 10 :
+      mediaQuery === 'xl' ? 25 : 15;
     playlistsQuery.get(`${Config.SPOTIFY_API_URL}/me/playlists?limit=${loadedPlaylists.length === 0 ? limit * 3 : limit}&offset=${loadedPlaylists.length}`, { headers: { Authorization: `Bearer ${localStorage.getItem(LocalStorageKey.SPOTIFY_ACCESS_TOKEN)}` } });
   }
 
