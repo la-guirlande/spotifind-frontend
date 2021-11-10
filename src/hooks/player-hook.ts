@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Config } from '../util/configuration';
-import { SpotifyPlayerData } from '../util/data-types';
 import { LocalStorageKey } from '../util/local-storage';
-import { SpotifyPlayerCallback, WebPlaybackError, WebPlaybackPlayer } from '../util/player-types';
-import { Response, SpotifyPlayerResponse } from '../util/response-types';
+import { SpotifyPlayerCallback, WebPlaybackPlayer, WebPlaybackState } from '../util/player-types';
+import { Response } from '../util/response-types';
 import { Status, useQuery } from './query-hook';
 
 export const usePlayer = () => {
-  const [state, setState] = useState<SpotifyPlayerData>(null);
+  const [playerState, setPlayerState] = useState<WebPlaybackState>(null);
   const [player, setPlayer] = useState<WebPlaybackPlayer>(null);
   const [deviceId, setDeviceId] = useState<string>(null);
-  const playerQuery = useQuery<SpotifyPlayerResponse>();
   const updatePlayerQuery = useQuery<Response>();
 
   useEffect(() => {
@@ -28,24 +26,7 @@ export const usePlayer = () => {
   }, []);
 
   useEffect(() => {
-    switch (playerQuery.status) {
-      case Status.INIT:
-        updateState();
-        break;
-      case Status.SUCCESS:
-        setState(playerQuery.response);
-        break;
-      case Status.ERROR:
-        console.error('Could not get Spotify player :', playerQuery.errorResponse.errors);
-        break;
-    }
-  }, [playerQuery.status]);
-
-  useEffect(() => {
     switch (updatePlayerQuery.status) {
-      case Status.SUCCESS:
-        updateState();
-        break;
       case Status.ERROR:
         console.error(updatePlayerQuery.errorResponse);
         break;
@@ -63,20 +44,20 @@ export const usePlayer = () => {
       setDeviceId(device_id);
       update('lead', device_id);
     });
-    player.addListener('not_ready', console.log);
-    player.addListener('player_state_changed', console.log);
-    player.addListener('initialization_error', console.error);
-    player.addListener('authentication_error', console.error);
-    player.addListener('account_error', console.error);
-    player.addListener('playback_error', console.error);
+    player.addListener('not_ready', (err) => console.error('Player not ready :', err));
+    player.addListener('player_state_changed', setPlayerState);
+    player.addListener('initialization_error', (err) => console.error('Player not initialized :', err));
+    player.addListener('authentication_error', (err) => console.error('Player not authenticated :', err));
+    player.addListener('account_error', (err) => console.error('Player account ready :', err));
+    player.addListener('playback_error', (err) => console.error('Player playback error :', err));
 
     player.connect();
 
     setPlayer(player);
   }
 
-  const loadPlayer = (): Promise<void> => {
-    return new Promise<void>((resolve, reject) => {
+  const loadPlayer = async (): Promise<void> => {
+    return await new Promise<void>((resolve, reject) => {
       const scriptTag = document.getElementById('spotify-player');
       if (scriptTag == null) {
         const script = document.createElement('script');
@@ -87,15 +68,11 @@ export const usePlayer = () => {
         script.src = 'https://sdk.scdn.co/spotify-player.js';
         script.onload = () => resolve();
         script.onerror = err => reject(err);
-        document.head.appendChild(script);
+        document.body.appendChild(script);
       } else {
         resolve();
       }
     });
-  }
-
-  const updateState = () => {
-    playerQuery.get(`${Config.SPOTIFY_API_URL}/me/player`, { headers: { Authorization: `Bearer ${localStorage.getItem(LocalStorageKey.SPOTIFY_ACCESS_TOKEN)}` } });
   }
 
   const prepare = (playlistId: string) => {
@@ -110,9 +87,13 @@ export const usePlayer = () => {
     await player.pause();
   }
 
-  const next = () => {
+  const togglePlay = async () => {
+    await player.togglePlay();
+  }
+
+  const next = async () => {
     // updatePlayerQuery.post(`${Config.SPOTIFY_API_URL}/me/player/next?device_id=${deviceId}`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem(LocalStorageKey.SPOTIFY_ACCESS_TOKEN)}` } });
-    player.resume();
+    await player.nextTrack();
   }
 
   const volume = async (volume?: number): Promise<number> => {
@@ -144,5 +125,5 @@ export const usePlayer = () => {
     }
   }
 
-  return { state, updateState, prepare, play, pause, next, volume, seek };
+  return { state: playerState, prepare, play, pause, togglePlay, next, volume, seek };
 }

@@ -27,21 +27,7 @@ export const GameContainer: FC = () => {
   const playlistsQuery = useQuery<SpotifyPlaylistsResponse>();
   const player = usePlayer();
   const [loadedPlaylists, setLoadedPlaylists] = useState<SpotifyPlaylistData[]>([]);
-  const gameHook = useGame(localStorage.getItem(LocalStorageKey.GAME_TOKEN), data => {
-    console.log('starting');
-    player.prepare(data.game.playlistId);
-    player.pause();
-    let seconds = 5;
-    const task = setInterval(() => {
-      console.log('Starting in ', seconds, 'second(s)');
-      seconds--;
-      if (seconds === 0) {
-        player.volume(1);
-        player.play();
-        clearInterval(task);
-      }
-    }, 1000);
-  });
+  const gameHook = useGame(localStorage.getItem(LocalStorageKey.GAME_TOKEN));
   
   const preloaded = useMemo(() => preloadGameQuery.status === Status.SUCCESS && preloadGameQuery.response.games.length === 1, [preloadGameQuery.status]);
 
@@ -59,18 +45,25 @@ export const GameContainer: FC = () => {
   }, [preloadGameQuery.status]);
 
   useEffect(() => {
-    if (gameHook.game?.status === GameStatus.INIT) {
-      switch (playlistsQuery.status) {
-        case Status.INIT:
-          handleFetchMorePlaylists();
-          break;
-        case Status.SUCCESS:
-          setLoadedPlaylists(oldState => [...oldState, ...playlistsQuery.response.items]);
-          break;
-        case Status.ERROR:
-          console.error(playlistsQuery.errorResponse.errors);
-          break;
-      }
+    switch (gameHook.game?.status) {
+      case GameStatus.INIT:
+        switch (playlistsQuery.status) {
+          case Status.INIT:
+            handleFetchMorePlaylists();
+            break;
+          case Status.SUCCESS:
+            setLoadedPlaylists(oldState => [...oldState, ...playlistsQuery.response.items]);
+            break;
+          case Status.ERROR:
+            console.error(playlistsQuery.errorResponse.errors);
+            break;
+        }
+        break;
+      case GameStatus.TIMER_BETWEEN:
+        player.prepare(gameHook.game.playlistId);
+        player.volume(1);
+        player.togglePlay();
+        break;
     }
   }, [gameHook.game?.status, playlistsQuery.status]);
 
@@ -124,12 +117,12 @@ export const GameContainer: FC = () => {
     }
     {gameHook.game?.status === GameStatus.TIMER_BETWEEN &&
       <>IN PROGRESS
-        <h3>{player.state != null && player.state.item?.name}</h3>
+        <h3>{player.state && player.state.track_window.current_track.name}</h3>
         De
         <ul>
-          {player.state != null && player.state.item?.artists.map((artist, i) => <li key={i}>{artist.name}</li>)}
+          {player.state && player.state.track_window.current_track.artists.map((artist, i) => <li key={i}>{artist.name}</li>)}
         </ul>
-        <Button variant="warn" onClick={() => player.next()}>Next</Button>
+        <Button variant="warn" onClick={() => { player.next(); player.togglePlay(); }}>Next</Button>
       </>
     }
     {gameHook.game?.status === GameStatus.FINISHED &&

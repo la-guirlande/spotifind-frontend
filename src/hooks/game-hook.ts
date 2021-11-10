@@ -29,9 +29,7 @@ export interface GameHook {
  * @param gameToken Game token
  * @returns Game hook values
  */
-export const useGame = (
-    gameToken?: string,
-    onStart?: (data: WebsocketStartServerToClientEvent) => void): GameHook => {
+export const useGame = (gameToken?: string): GameHook => {
   const { authUser } = useContext(AuthenticationContext);
   const { socket } = useContext(WebsocketContext);
   const [token, setToken] = useState<string>(gameToken);
@@ -43,10 +41,7 @@ export const useGame = (
     socket.on(WebsocketEventType.JOIN, (data: WebsocketJoinServerToClientEvent) => setToken(data.token));
     socket.on(WebsocketEventType.LEAVE, (data: WebsocketLeaveServerToClientEvent) => setGame(data.game));
     socket.on(WebsocketEventType.CONNECT, (data: WebsocketConnectServerToClientEvent) => setGame(data.game));
-    socket.on(WebsocketEventType.START, (data: WebsocketStartServerToClientEvent) => {
-      setGame(data.game);
-      onStart(data);
-    });
+    socket.on(WebsocketEventType.START, (data: WebsocketStartServerToClientEvent) => setGame(data.game));
     return () => {
       socket.off(WebsocketEventType.ERROR);
       socket.off(WebsocketEventType.JOIN);
